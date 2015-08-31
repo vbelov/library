@@ -1,0 +1,7 @@
+development:
+  adapter: postgresql
+  database: library
+
+test:
+  adapter: sqlite3
+  database: db/library.sqlite3.db

@@ -3,6 +3,7 @@
 *.rbc
 /.config
 /coverage/
+/db/library.sqlite3.db
 /InstalledFiles
 /pkg/
 /spec/reports/
