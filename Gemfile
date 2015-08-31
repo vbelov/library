@@ -7,6 +7,7 @@ gem 'thin'
 gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'pg'
+gem 'faker'
 
 group :test do
   gem 'test-unit'

@@ -13,25 +13,28 @@
 
 ActiveRecord::Schema.define(version: 20150831081037) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "authors", force: :cascade do |t|
     t.string "name", null: false
   end
 
-  add_index "authors", ["name"], name: "index_authors_on_name"
+  add_index "authors", ["name"], name: "index_authors_on_name", using: :btree
 
   create_table "authors_books", id: false, force: :cascade do |t|
     t.integer "author_id"
     t.integer "book_id"
   end
 
-  add_index "authors_books", ["author_id"], name: "index_authors_books_on_author_id"
-  add_index "authors_books", ["book_id"], name: "index_authors_books_on_book_id"
+  add_index "authors_books", ["author_id"], name: "index_authors_books_on_author_id", using: :btree
+  add_index "authors_books", ["book_id"], name: "index_authors_books_on_book_id", using: :btree
 
   create_table "books", force: :cascade do |t|
     t.string  "name", null: false
     t.integer "year", null: false
   end
 
-  add_index "books", ["name"], name: "index_books_on_name"
+  add_index "books", ["name"], name: "index_books_on_name", using: :btree
 
 end
