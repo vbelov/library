@@ -4,8 +4,7 @@ require './models/author'
 require './models/book'
 
 get '/' do
-  {
-      authors: Author.count,
-      books: Book.count
-  }.to_json
+  @books = Book.order(:id).limit(15)
+
+  slim :index
 end

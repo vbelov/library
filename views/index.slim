@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    title Library
+    link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+  body
+    .col-md-1
+    .col-md-10
+      table.table.table-striped.table-bordered
+        tr
+          th Title
+          th Authors
+          th Published
+        - @books.each do |book|
+          tr
+            td= book.name
+            td= book.authors.map(&:name).join(', ')
+            td= book.year
+    .col-md-1
+    script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
