@@ -30,3 +30,5 @@ bundle exec rake db:seed
 ```
 ruby library.rb
 ```
+
+Приложение доступно по адресу: http://localhost:4567/
