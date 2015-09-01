@@ -3,7 +3,7 @@ require 'sinatra/activerecord'
 require './models/author'
 require './models/book'
 
-PER_PAGE = 15
+PER_PAGE = 10
 
 get '/' do
   slim :index
@@ -28,6 +28,16 @@ post '/api/books' do
   else
     status 400
     {errors: book.errors.messages, errors2: book.errors.full_messages}.to_json
+  end
+end
+
+delete '/api/books/:id' do
+  book = Book.find_by_id(params[:id])
+  if book
+    book.destroy
+  else
+    status 404
+    {errors: ["Book with id=#{params[:id]} was not found"]}
   end
 end
 

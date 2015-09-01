@@ -70,4 +70,17 @@ class LibraryTest < Test::Unit::TestCase
       raise ActiveRecord::Rollback
     end
   end
+
+  def test_it_should_delete_book
+    ActiveRecord::Base.connection.transaction do
+      book = Book.create!(name: 'The Pragmatic Programmer', year: 2000)
+      book.authors << Author.create!(name: 'Andrew Hunt')
+
+      delete "/api/books/#{book.id}"
+      assert last_response.ok?
+      assert_equal Book.find_by_id(book.id), nil
+
+      raise ActiveRecord::Rollback
+    end
+  end
 end

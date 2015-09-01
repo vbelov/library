@@ -21,8 +21,27 @@ function loadPage(page, pushState) {
             var row = $('<tr>').append(
                 $('<td>').text(book.name),
                 $('<td>').text(authors),
-                $('<td>').text(book.year)
+                $('<td>').text(book.year),
+                $('<td><button type="button" class="btn btn-danger delete-book">Delete</button></td>')
             ).appendTo(table_content);
+
+            (function(){
+                var book_id = book.id;
+                var $row = row;
+                row.find('.delete-book').click(function(){
+                    if (confirm("Are you sure?") == true) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: '/api/books/' + book_id,
+                            success: function(){
+                                $row.fadeOut(500, function(){
+                                    loadPage(currentPage);
+                                });
+                            }
+                        });
+                    }
+                });
+            })();
         }
 
         if (pushState) history.pushState({page: currentPage}, '', '/books?page=' + currentPage);
