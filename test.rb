@@ -33,4 +33,41 @@ class LibraryTest < Test::Unit::TestCase
       raise ActiveRecord::Rollback
     end
   end
+
+  def test_it_creates_book
+    ActiveRecord::Base.connection.transaction do
+      name = 'The Pragmatic Programmer'
+      year = 2000
+
+      post '/api/books', name: name, year: year
+      assert last_response.ok?
+      assert_equal Book.count, 1
+
+      book = Book.last
+      assert_equal book.name, name
+      assert_equal book.year, year
+
+      json = JSON.parse(last_response.body)
+      assert_equal json['id'], book.id
+
+      raise ActiveRecord::Rollback
+    end
+  end
+
+  def test_it_rejects_to_save_invalid_book
+    ActiveRecord::Base.connection.transaction do
+      name = ''
+      year = 1000
+
+      post '/api/books', name: name, year: year
+      assert_equal last_response.status, 400
+
+      json = JSON.parse(last_response.body)
+      errors = json['errors']
+      assert_equal errors['name'].join(', '), "can't be blank"
+      assert_equal errors['year'].join(', '), 'must be greater than or equal to 1945'
+
+      raise ActiveRecord::Rollback
+    end
+  end
 end

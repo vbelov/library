@@ -62,3 +62,41 @@ $(document).ready(function(){
     loadCurrentPage();
     loadPage(currentPage, true);
 });
+
+$('#add-book').click(function(){
+    $('#new-book').show();
+    $('#bookTitle').focus();
+});
+
+$('#new-book .cancel').click(function(){
+    $('#new-book').hide();
+    $('#new-book input').val('');
+    $('#new-book .alert').hide();
+    return false;
+});
+
+$('#new-book .save').click(function(){
+    $('#new-book .alert').hide();
+
+    var book = {
+        name: $('#bookTitle').val(),
+        year: $('#bookYear').val()
+    };
+    $.post('/api/books', book, function(data){
+        $('#new-book').hide();
+        $('#new-book input').val('');
+        $('#book-saved').show().fadeOut(1500);
+    }).fail(function(obj){
+        var errors = $.parseJSON(obj.responseText).errors2;
+        var msg = '';
+        for (var j = 0; j < errors.length; j++) {
+            if (msg.length > 0) msg += '<br/>';
+            msg += errors[j];
+        }
+
+        $('#new-book .alert').show();
+        $('#new-book .alert .message').html(msg);
+    });
+
+    return false;
+});

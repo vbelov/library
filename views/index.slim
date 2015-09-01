@@ -6,6 +6,26 @@ html
   body
     .col-md-1
     .col-md-10
+      button.btn.btn-default#add-book Add book
+      #book-saved.alert.alert-success.alert-dismissible role="alert" style="display: none;"
+        button.close type="button" data-dismiss="alert" aria-label="Close"
+          span aria-hidden="true" &times;
+        | Book saved!
+      #new-book style="display: none;"
+        .alert.alert-danger.alert-dismissible role="alert" style="display: none;"
+          button.close type="button" data-dismiss="alert" aria-label="Close"
+            span aria-hidden="true" &times;
+          span.message
+        form
+          .form-group
+            label for="bookTitle" Title
+            input.form-control#bookTitle type="text"
+          .form-group
+            label for="bookYear" The year of publishing
+            - year = Book::MAX_YEAR
+            input.form-control#bookYear type="number" min="1945" max="#{year}" placeholder="Number between #{Book::MIN_YEAR} and #{Book::MAX_YEAR}"
+          button.btn.btn-primary.save Save
+          button.btn.btn-default.cancel Cancel
       nav
         ul.pager
           li

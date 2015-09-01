@@ -21,6 +21,16 @@ get '/api/books' do
   @books.to_json(include: :authors)
 end
 
+post '/api/books' do
+  book = Book.new(name: params['name'], year: params['year'])
+  if book.save
+    book.to_json
+  else
+    status 400
+    {errors: book.errors.messages, errors2: book.errors.full_messages}.to_json
+  end
+end
+
 after do
   ActiveRecord::Base.connection.close
 end
