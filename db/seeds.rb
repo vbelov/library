@@ -35,7 +35,7 @@ class Generator
     BOOKS.times do |i|
       name = Faker::Lorem.sentence(2, true, 6)
       year = rand(YEAR_LAST - YEAR_FIRST) + YEAR_FIRST
-      sqls << "insert into books (name, year) values (#{ActiveRecord::Base.connection.quote(name)}, #{year});"
+      sqls << "insert into books (name, year, first_letter) values (#{ActiveRecord::Base.connection.quote(name)}, #{year}, '#{name.first}');"
 
       if (i + 1) % BATCH_SIZE == 0
         ActiveRecord::Base.connection.execute(sqls.join(''))
@@ -86,6 +86,13 @@ class Generator
       create_authors
       create_books
       create_authors_books
+
+      puts 'creating books_written cache for authors ...'
+      sql = 'update authors set books_written=a.count from
+              (select author_id, count(*) as count
+              from authors_books group by author_id) as a
+              where id=a.author_id;'
+      ActiveRecord::Base.connection.execute(sql)
     end
 
     puts res

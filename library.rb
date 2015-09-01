@@ -4,6 +4,7 @@ require './models/author'
 require './models/book'
 
 PER_PAGE = 10
+MOST_PRODUCTIVE_AUTHORS = 10
 
 get '/' do
   slim :index
@@ -39,6 +40,37 @@ delete '/api/books/:id' do
     status 404
     {errors: ["Book with id=#{params[:id]} was not found"]}
   end
+end
+
+get '/stats' do
+  slim :stats
+end
+
+get '/api/stats/books_per_year' do
+  sql = 'select year, count(*) as count from books group by year order by year;'
+  result = Book.connection.exec_query(sql)
+  result.to_json
+end
+
+get '/api/stats/books_of_most_productive_authors' do
+  sql =  "SELECT year, count(*) FROM books WHERE id IN
+          (
+          SELECT book_id FROM authors_books WHERE author_id IN
+          (SELECT id FROM authors ORDER BY books_written DESC LIMIT #{MOST_PRODUCTIVE_AUTHORS})
+          )
+          GROUP BY year
+          ORDER BY year;"
+  result = Book.connection.exec_query(sql)
+  result.to_json
+end
+
+get '/api/stats/first_letter_of_book_title' do
+  sql = 'select first_letter, count(*)
+          from books
+          group by first_letter
+          order by first_letter;'
+  result = Book.connection.exec_query(sql)
+  result.to_json
 end
 
 after do

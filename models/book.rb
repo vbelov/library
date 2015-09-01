@@ -8,4 +8,12 @@ class Book < ActiveRecord::Base
   validates :year, numericality: { only_integer: true,
                                    greater_than_or_equal_to: MIN_YEAR,
                                    less_than_or_equal_to: MAX_YEAR }
+
+  before_save :set_first_letter
+
+  private
+
+  def set_first_letter
+    self.first_letter = name.first
+  end
 end

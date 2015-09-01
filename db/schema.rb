@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150831081037) do
+ActiveRecord::Schema.define(version: 20150901174205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "authors", force: :cascade do |t|
-    t.string "name", null: false
+    t.string  "name",          null: false
+    t.integer "books_written"
   end
 
   add_index "authors", ["name"], name: "index_authors_on_name", using: :btree
@@ -31,10 +32,12 @@ ActiveRecord::Schema.define(version: 20150831081037) do
   add_index "authors_books", ["book_id"], name: "index_authors_books_on_book_id", using: :btree
 
   create_table "books", force: :cascade do |t|
-    t.string  "name", null: false
-    t.integer "year", null: false
+    t.string  "name",                   null: false
+    t.integer "year",                   null: false
+    t.string  "first_letter", limit: 1
   end
 
   add_index "books", ["name"], name: "index_books_on_name", using: :btree
+  add_index "books", ["year"], name: "index_books_on_year", using: :btree
 
 end

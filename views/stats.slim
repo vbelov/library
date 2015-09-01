@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    title Library
+    link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+  body style="padding-top: 70px;"
+    nav.navbar.navbar-default.navbar-fixed-top
+      .container
+        ul.nav.navbar-nav.navbar-left
+          li
+            a href="/books" Books
+          li
+            a href="/stats" Statistics
+    .col-md-1
+    .col-md-10
+      h3 Books per year
+      canvas#booksPerYear width="1200" height="400"
+
+      h3 Books of most productive authors
+      canvas#booksOfMostProductiveAuthors width="1200" height="400"
+
+      h3 First letter of book titles statistics
+      canvas#firstLetter width="1200" height="400"
+    .col-md-1
+
+    script src="//code.jquery.com/jquery-1.11.3.min.js"
+    script src="stats.js"
+    script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"
