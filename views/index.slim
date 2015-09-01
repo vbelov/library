@@ -6,15 +6,19 @@ html
   body
     .col-md-1
     .col-md-10
-      table.table.table-striped.table-bordered
-        tr
-          th Title
-          th Authors
-          th Published
-        - @books.each do |book|
+      nav
+        ul.pager
+          li
+            a#previous-page href="#" Previous
+          li
+            a#next-page href="#" Next
+      table.table.table-striped.table-bordered#books
+        thead
           tr
-            td= book.name
-            td= book.authors.map(&:name).join(', ')
-            td= book.year
+            th Title
+            th Authors
+            th Published
+        tbody
     .col-md-1
-    script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+    script src="//code.jquery.com/jquery-1.11.3.min.js"
+    script src="library.js"
