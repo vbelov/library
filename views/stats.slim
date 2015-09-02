@@ -13,6 +13,13 @@ html
             a href="/stats" Statistics
     .col-md-1
     .col-md-10
+      .delete-books
+        form.form-inline
+          .form-group
+            label for="yearToDelete" Delete all books published in year:
+            input.form-control#yearToDelete type="number"
+          button.btn.btn-default type="submit" Delete
+
       h3 Books per year
       canvas#booksPerYear width="1200" height="400"
 

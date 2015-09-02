@@ -47,21 +47,11 @@ get '/stats' do
 end
 
 get '/api/stats/books_per_year' do
-  sql = 'select year, count(*) as count from books group by year order by year;'
-  result = Book.connection.exec_query(sql)
-  result.to_json
+  Book.per_year_stats.to_json
 end
 
 get '/api/stats/books_of_most_productive_authors' do
-  sql =  "SELECT year, count(*) FROM books WHERE id IN
-          (
-          SELECT book_id FROM authors_books WHERE author_id IN
-          (SELECT id FROM authors ORDER BY books_written DESC LIMIT #{MOST_PRODUCTIVE_AUTHORS})
-          )
-          GROUP BY year
-          ORDER BY year;"
-  result = Book.connection.exec_query(sql)
-  result.to_json
+  Book.per_year_stats(MOST_PRODUCTIVE_AUTHORS).to_json
 end
 
 get '/api/stats/first_letter_of_book_title' do
@@ -71,6 +61,12 @@ get '/api/stats/first_letter_of_book_title' do
           order by first_letter;'
   result = Book.connection.exec_query(sql)
   result.to_json
+end
+
+delete '/api/books_for_year' do
+  year = params['year']
+  Book.delete_all_for_year(year)
+  {}
 end
 
 after do
